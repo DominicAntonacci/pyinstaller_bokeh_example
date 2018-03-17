@@ -1,0 +1,62 @@
+--- ./bokeh_templates_old.py	2018-03-04 15:51:30.590481900 -0500
++++ /cygdrive/c/Anaconda3/envs/epsilon_demo_build/Lib/site-packages/bokeh/core/templates.py	2018-03-04 15:12:24.826975200 -0500
+@@ -1,5 +1,6 @@
+ ''' Provide Jinja2 templates used by Bokeh to embed Bokeh documents and
+ models in various ways.
++
+ .. bokeh-jinja:: bokeh.core.templates.AUTOLOAD_JS
+ .. bokeh-jinja:: bokeh.core.templates.AUTOLOAD_NB_JS
+ .. bokeh-jinja:: bokeh.core.templates.AUTOLOAD_TAG
+@@ -11,14 +12,43 @@
+ .. bokeh-jinja:: bokeh.core.templates.NOTEBOOK_LOAD
+ .. bokeh-jinja:: bokeh.core.templates.PLOT_DIV
+ .. bokeh-jinja:: bokeh.core.templates.SCRIPT_TAG
++
+ '''
+ from __future__ import absolute_import
+ 
+ import json
++import sys, os
++import bokeh.core
++
++#from jinja2 import Environment, PackageLoader, Markup
++from jinja2 import Environment, Markup, FileSystemLoader
+ 
+-from jinja2 import Environment, PackageLoader, Markup
++# add in from Uynix
++def resource_path(relative_path, file_name):
++    """ Get absolute path to resource, works for both in IDE and for PyInstaller """
++    # PyInstaller creates a temp folder and stores path in sys._MEIPASS
++    # In IDE, the path is os.path.join(base_path, relative_path, file_name)
++    # Search in Dev path first, then MEIPASS
++    base_path = os.path.abspath(".")
++    dev_file_path = os.path.join(base_path, relative_path, file_name)
++    if os.path.exists(dev_file_path):
++        return dev_file_path
++    else:
++        base_path = sys._MEIPASS
++        file_path = os.path.join(base_path, file_name)
++        if not os.path.exists(file_path):
++            msg = "\nError finding resource in either {} or {}".format(dev_file_path, file_path)
++            print(msg)
++            return None
++        return file_path
++        
++""" my new code here
++"""
++_env = Environment(loader=FileSystemLoader(os.path.dirname(bokeh.core.__file__) +'/_templates'))
++""" end of my new code
++"""
+ 
+-_env = Environment(loader=PackageLoader('bokeh.core', '_templates'))
++#_env = Environment(loader=PackageLoader('bokeh.core', '_templates'))
+ _env.filters['json'] = lambda obj: Markup(json.dumps(obj))
+ 
+ JS_RESOURCES = _env.get_template("js_resources.html")
+@@ -41,4 +71,4 @@
+ 
+ AUTOLOAD_NB_JS = _env.get_template("autoload_nb_js.js")
+ 
+-AUTOLOAD_TAG = _env.get_template("autoload_tag.html")
+\ No newline at end of file
++AUTOLOAD_TAG = _env.get_template("autoload_tag.html")
