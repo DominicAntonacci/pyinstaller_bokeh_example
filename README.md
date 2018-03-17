@@ -5,7 +5,8 @@ in a multiprocessing thread and get it all to run using a
 PyInstaller exe. This process does not support the one-file option
 for PyInstaller because you must manually copy files later on.
 
-This has only been tested on Windows 10 using Anaconda Python 3.6.
+This has only been tested on Windows 10 using Anaconda Python 3.6 
+using bokeh 0.12.14 and PyInstaller 3.3.1.
 
 Setting Up Your Environment
 ===========================
