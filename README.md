@@ -1,3 +1,11 @@
+UPDATE (26 June 2018)
+======
+Pyinstaller should work natively on the master branch of Bokeh and
+should propagate to the latest release soon (if not already there).
+
+This instructions are now obselete, but will be left in case anyone
+is forced to use an old version.
+
 Introduction
 ============
 This is a minimal example to show how to run a bokeh server
